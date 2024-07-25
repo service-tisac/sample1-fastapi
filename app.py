@@ -3,6 +3,7 @@ from pydantic import BaseModel
 import torch
 import torch.nn as nn
 from typing import List
+from textblob import TextBlob
 
 # Define the Neural Network
 class SimpleNN(nn.Module):
