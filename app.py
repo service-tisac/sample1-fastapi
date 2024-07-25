@@ -4,6 +4,33 @@ import torch
 import torch.nn as nn
 from typing import List
 from textblob import TextBlob
+import emoji
+
+class TextRequest(BaseModel):
+    text: str
+
+@app.post("/test/textblob")
+async def test_textblob(request: TextRequest):
+    try:
+        blob = TextBlob(request.text)
+        sentiment = blob.sentiment
+        response = {
+            "polarity": sentiment.polarity,
+            "subjectivity": sentiment.subjectivity
+        }
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/test/emoji")
+async def test_emoji():
+    try:
+        response = {
+            "message": emoji.emojize("Hello, world! :earth_americas:")
+        }
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # Define the Neural Network
 class SimpleNN(nn.Module):
